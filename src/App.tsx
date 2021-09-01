@@ -1,28 +1,31 @@
 import './App.css';
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 
 function App() {
   const [flipResult, setFlipResult] = useState(0)
   const [numberOfCoins, setNumberOfCoins] = useState(1)
   const [haveThumb, setHaveThumb] = useState(false)
+  const [results, setResults] = useState<JSX.Element[]>()
 
   // returns 0 or 1
   const flipCoin = (): number => Math.floor(Math.random() * 2)
 
   const flipCoins = (): void => {
     if (!haveThumb) {
-      const results: number[] = []
+      const r: number[] = []
       for (let i = 0; i < numberOfCoins; i++) {
-        results.push(flipCoin())
+        r.push(flipCoin())
       }
-      const totalWins = results.reduce((sum, current) => sum + current, 0)
+      const totalWins = r.reduce((sum, current) => sum + current, 0)
+      setResults(r.map(v => (<span>{v}</span>)))
       setFlipResult(totalWins)
     } else {
-      const results: [number, number][] = []
+      const r: [number, number][] = []
       for (let i = 0; i < numberOfCoins; i++) {
-        results.push([flipCoin(), flipCoin()])
+        r.push([flipCoin(), flipCoin()])
       }
-      const totalWins = results.reduce((sum, current) => sum + (current[0] * current[1]), 0)
+      const totalWins = r.reduce((sum, current) => sum + (current[0] || current[1] ? 1 : 0), 0)
+      setResults(r.map(vs => (<span>({vs[0]}, {vs[1]})</span>)))
       setFlipResult(totalWins)
     }
   }
@@ -53,6 +56,7 @@ function App() {
         >
           Flip Coin{(numberOfCoins > 1) && (<span>s</span>)}
         </button>
+        {results}
       </header>
     </div>
   );
