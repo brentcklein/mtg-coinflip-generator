@@ -37,14 +37,16 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>
-          {flipResult}
+          Total wins: {flipResult}
         </p>
+        <label htmlFor="numberOfCoins"></label>
         <input
           type="number"
           name="numberOfCoins"
           id="numberOfCoins"
           value={numberOfCoins}
           onChange={handleNumberChange} />
+        <label htmlFor="haveThumb">Krark's Thumb in play</label>
         <input 
           type="checkbox"
           name="haveThumb"
@@ -56,6 +58,7 @@ function App() {
         >
           Flip Coin{(numberOfCoins > 1) && (<span>s</span>)}
         </button>
+        <p>Results</p>
         {results}
       </header>
     </div>
